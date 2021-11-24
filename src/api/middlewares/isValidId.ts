@@ -10,7 +10,7 @@ export default async function isValidId(
     const isValidId = id.match(/^[0-9a-fA-F]{24}$/);
 
     if (!isValidId) {
-        throw new Error("Id is not valid");
+        return res.json({ error: "Id is not valid" });
     }
 
     return next();
