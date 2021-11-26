@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { ProductRoutes } from "./api/routes/Product";
 import { UserRoutes } from "./api/routes/User";
 import { CartRoutes } from "./api/routes/Cart";
+import { Stripe } from "./api/routes/Stripe";
 import cors from "cors";
 import "express-async-errors";
 import "./config/dbConfig";
@@ -15,6 +16,7 @@ app.use(cors());
 app.use("/users", UserRoutes);
 app.use("/products", ProductRoutes);
 app.use("/cart", CartRoutes);
+app.use("/payment", Stripe);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof Error) {
