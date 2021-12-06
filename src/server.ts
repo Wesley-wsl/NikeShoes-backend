@@ -1,9 +1,8 @@
-import express, { NextFunction, Request, Response } from "express";
-import { ProductRoutes } from "./api/routes/Product";
-import { UserRoutes } from "./api/routes/User";
-import { CartRoutes } from "./api/routes/Cart";
-import { Stripe } from "./api/routes/Stripe";
 import cors from "cors";
+import express, { Request, Response } from "express";
+
+import { CartRoutes, ProductRoutes, Stripe, UserRoutes } from "./api/routes";
+
 import "express-async-errors";
 import "./config/dbConfig";
 
@@ -18,7 +17,7 @@ app.use("/products", ProductRoutes);
 app.use("/cart", CartRoutes);
 app.use("/payment", Stripe);
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response) => {
     if (err instanceof Error) {
         return res.status(400).json({
             success: false,
