@@ -1,8 +1,8 @@
 export interface IUser {
-    first_name: String;
-    last_name: String;
-    email: String;
-    password: String;
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
     cart?: Record<string, object>;
     admin?: boolean;
 }
@@ -13,17 +13,17 @@ export interface IAuthenticateRequest {
 }
 
 export interface IProducts {
-    id?: String;
-    name: String;
-    description: String;
-    product_image: String;
-    category: String;
+    id?: string;
+    name: string;
+    description: string;
+    product_image: string;
+    category: string;
     price: number;
 }
 
 export interface IId {
     id: string;
-    userId?: any;
+    userId?: string;
 }
 
 export interface ICategory {
