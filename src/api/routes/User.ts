@@ -2,9 +2,7 @@ import express from "express";
 
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
 import UserControllers from "../controllers/UserControllers";
-import { ensureAdmin } from "../middlewares/ensureAdmin";
-import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import isValidId from "../middlewares/isValidId";
+import { ensureAdmin, ensureAuthenticated, isValidId } from "../middlewares";
 
 const routes = express.Router();
 

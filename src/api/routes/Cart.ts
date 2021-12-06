@@ -1,8 +1,7 @@
 import express from "express";
 
 import CartControllers from "../controllers/CartControllers";
-import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import isValidId from "../middlewares/isValidId";
+import { ensureAuthenticated, isValidId } from "../middlewares";
 
 const routes = express.Router();
 

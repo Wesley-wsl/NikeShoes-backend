@@ -1,9 +1,7 @@
 import express from "express";
 
 import ProductsControllers from "../controllers/ProductsControllers";
-import { ensureAdmin } from "../middlewares/ensureAdmin";
-import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import isValidId from "../middlewares/isValidId";
+import { ensureAdmin, ensureAuthenticated, isValidId } from "../middlewares";
 
 const routes = express.Router();
 
