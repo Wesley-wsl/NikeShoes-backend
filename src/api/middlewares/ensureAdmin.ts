@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+
 import UserModel from "../models/UserModel";
 
 export async function ensureAdmin(
     request: Request,
     response: Response,
-    next: NextFunction
+    next: NextFunction,
 ) {
     const { userId }: any = request?.res?.locals;
 

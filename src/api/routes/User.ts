@@ -1,4 +1,5 @@
 import express from "express";
+
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
 import UserControllers from "../controllers/UserControllers";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
@@ -14,7 +15,7 @@ routes.delete(
     ensureAuthenticated,
     ensureAdmin,
     isValidId,
-    UserControllers.deleteUserById
+    UserControllers.deleteUserById,
 );
 routes.get("/", ensureAuthenticated, UserControllers.listUsers);
 

@@ -1,8 +1,9 @@
-import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import express, { Request, Response } from "express";
 
 dotenv.config();
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 const routes = express.Router();

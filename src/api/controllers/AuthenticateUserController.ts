@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+
 import AuthenticateUserService from "../services/AuthenticateUserService";
 
 export default {

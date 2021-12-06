@@ -1,22 +1,28 @@
 import { NextFunction, Request, Response } from "express";
-import { IId } from "../@types";
+
 import UserServices from "../services/UserServices";
 
 export default {
     async createNewUser(
         request: Request,
         response: Response,
-        next: NextFunction
+        next: NextFunction,
     ) {
         try {
-            const { first_name, last_name, email, password, admin = false } = request.body;
+            const {
+                first_name,
+                last_name,
+                email,
+                password,
+                admin = false,
+            } = request.body;
 
             const newUserCreated = await UserServices.createNewUser({
                 first_name,
                 last_name,
                 email,
                 password,
-                admin
+                admin,
             });
 
             return response.status(201).json({
@@ -28,11 +34,7 @@ export default {
         }
     },
 
-    async deleteUserById(
-        request: Request,
-        response: Response,
-        next: NextFunction
-    ) {
+    async deleteUserById(request: Request, response: Response) {
         const { id } = request.params;
 
         const userDeleted = await UserServices.deleteUserById({ id });

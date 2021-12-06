@@ -1,7 +1,8 @@
 import { compare } from "bcryptjs";
+import { sign } from "jsonwebtoken";
+
 import { IAuthenticateRequest } from "../@types";
 import UserModel from "../models/UserModel";
-import { sign } from "jsonwebtoken";
 
 export default {
     async execute({ email, password }: IAuthenticateRequest) {
@@ -19,9 +20,9 @@ export default {
             },
             `${process.env.SECRET}`,
             {
-                subject: user.email,
-                expiresIn: "1d",
-            }
+                subject: `${user._id}`,
+                expiresIn: "1h",
+            },
         );
 
         return token;

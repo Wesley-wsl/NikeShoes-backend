@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 export default async function isValidId(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ) {
     const { id } = req.params;
 
