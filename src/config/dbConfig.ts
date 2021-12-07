@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-dotenv.config();
+dotenv.config({
+    path: process.env.NODE_ENV === "test" ? ".env.test" : " .env",
+});
 
 const dbConfig = `${process.env.MONGODB_URI}`;
 
