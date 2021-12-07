@@ -63,4 +63,17 @@ describe("createNewUser", () => {
         expect(result.body.newUserCreated).toHaveProperty("_id");
         expect(result.statusCode).toBe(201);
     });
+
+    test("Cannot create a user with an existing email ", async () => {
+        const sut = request(app);
+        const result = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+        expect(result.body.error).toEqual("User already registered");
+        expect(result.statusCode).toBe(400);
+    });
 });
