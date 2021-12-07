@@ -35,4 +35,15 @@ describe("createNewUser", () => {
         });
         expect(result.body.error).toEqual("password is required");
     });
+
+    test("return 400 if email is not provided", async () => {
+        const sut = request(app);
+        const result = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            password: "1234",
+            admin: false,
+        });
+        expect(result.body.error).toEqual("email is required");
+    });
 });
