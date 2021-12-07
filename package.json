@@ -4,8 +4,8 @@
     "main": "server,ts",
     "license": "MIT",
     "scripts": {
-        "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-        "test": "jest"
+        "dev": "set NODE_ENV=dev && ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+        "test": "set NODE_ENV=test && jest --runInBand --detectOpenHandles"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.2",
@@ -15,6 +15,7 @@
         "@types/jsonwebtoken": "^8.5.6",
         "@types/mongoose": "^5.11.97",
         "@types/stripe": "^8.0.417",
+        "@types/supertest": "^2.0.11",
         "@typescript-eslint/eslint-plugin": "^5.6.0",
         "@typescript-eslint/parser": "^5.6.0",
         "eslint": "^8.4.0",
@@ -29,6 +30,7 @@
         "eslint-plugin-react-hooks": "^4.3.0",
         "jest": "^27.4.3",
         "prettier": "^2.5.1",
+        "supertest": "^6.1.6",
         "ts-jest": "^27.1.0",
         "ts-node-dev": "^1.1.8",
         "typescript": "^4.5.2"
