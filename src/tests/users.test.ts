@@ -147,6 +147,30 @@ describe("Login", () => {
         expect(result.body.error).toEqual("Email/Password incorrect");
         expect(result.statusCode).toBe(400);
     });
+
+    test("should return error if email is not provided", async () => {
+        const sut = request(app);
+
+        const result = await sut.post("/users/login").send({
+            password: "1234",
+        });
+
+        expect(result.body).toHaveProperty("error");
+        expect(result.body.error).toEqual("Email/Password incorrect");
+        expect(result.statusCode).toBe(400);
+    });
+
+    test("should return error if password is not provided", async () => {
+        const sut = request(app);
+
+        const result = await sut.post("/users/login").send({
+            email: "rodrigo@gmail.com",
+        });
+
+        expect(result.body).toHaveProperty("error");
+        expect(result.body.error).toEqual("Email/Password incorrect");
+        expect(result.statusCode).toBe(400);
+    });
 });
 
 // describe("deleteUserById", () => {
