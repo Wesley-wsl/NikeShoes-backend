@@ -192,16 +192,93 @@ describe("Login", () => {
     });
 });
 
-// describe("deleteUserById", () => {
-//     jest.setTimeout(20000);
+describe("deleteUserById", () => {
+    jest.setTimeout(20000);
 
-//     beforeAll(() => connect());
+    beforeAll(() => connect());
 
-//     afterAll(() => disconnect());
+    afterAll(() => disconnect());
 
-//     afterEach(() => UserModel.deleteMany({}));
-//     test("should delete user by id", () => {});
-// });
+    afterEach(() => UserModel.deleteMany({}));
+
+    test("should not delete user if not authenticated", async () => {
+        const sut = request(app);
+
+        const personForDelete = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const result = await sut.delete(`/users/${personForDelete.body._id}`);
+
+        expect(result.statusCode).toBe(401);
+    });
+
+    test("should not delete user if is not admin", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Admin",
+            last_name: "Admin'",
+            email: "admin@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const personForDelete = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "admin@gmail.com",
+            password: "1234",
+        });
+
+        const result = await sut
+            .delete(`/users/${personForDelete.body._id}`)
+            .set("Authorization", `Bearer ${token.body}`);
+
+        expect(result.statusCode).toBe(401);
+    });
+
+    test("should delete user by id", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Admin",
+            last_name: "Admin'",
+            email: "admin@gmail.com",
+            password: "1234",
+            admin: true,
+        });
+
+        const personForDelete = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "admin@gmail.com",
+            password: "1234",
+        });
+
+        const result = await sut
+            .delete(`/users/${personForDelete.body._id}`)
+            .set("Authorization", `Bearer ${token.body}`);
+
+        expect(result.statusCode).toBe(200);
+    });
+});
 
 describe("listUsers", () => {
     jest.setTimeout(20000);
