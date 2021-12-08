@@ -131,3 +131,103 @@ describe("listProducts", () => {
         expect(result.body.success).toEqual(true);
     });
 });
+
+describe("Delete product", () => {
+    jest.setTimeout(20000);
+
+    beforeAll(() => connect());
+
+    afterAll(() => disconnect());
+
+    afterEach(() => ProductModel.deleteMany({}));
+
+    test("should delete product by id", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Admin",
+            last_name: "Admin'",
+            email: "adm@gmail.com",
+            password: "1234",
+            admin: true,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "adm@gmail.com",
+            password: "1234",
+        });
+
+        const product = await sut
+            .post("/products")
+            .set("Authorization", `Bearer ${token.body}`)
+            .send({
+                name: "TênisNike",
+                description: "TênisNike",
+                product_image: "randomimage",
+                category: "Man",
+                price: 100,
+            });
+
+        const result = await sut
+            .delete(`/products/${product.body.newProductCreated._id}`)
+            .set("Authorization", `Bearer ${token.body}`);
+
+        expect(result.body).toHaveProperty("productDeleted");
+        expect(result.statusCode).toBe(200);
+        expect(result.body.success).toEqual(true);
+    });
+});
+
+describe("Update product", () => {
+    jest.setTimeout(20000);
+
+    beforeAll(() => connect());
+
+    afterAll(() => disconnect());
+
+    afterEach(() => ProductModel.deleteMany({}));
+
+    test("should update product by id", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Admin",
+            last_name: "Admin'",
+            email: "adm@gmail.com",
+            password: "1234",
+            admin: true,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "adm@gmail.com",
+            password: "1234",
+        });
+
+        const product = await sut
+            .post("/products")
+            .set("Authorization", `Bearer ${token.body}`)
+            .send({
+                name: "TênisNike",
+                description: "TênisNike",
+                product_image: "randomimage",
+                category: "Man",
+                price: 100,
+            });
+
+        const result = await sut
+            .put(`/products/${product.body.newProductCreated._id}`)
+            .set("Authorization", `Bearer ${token.body}`)
+            .send({
+                name: "Niike",
+                description: "TênisNike",
+                product_image: "randomimage",
+                category: "Man",
+                price: 100,
+            });
+
+        console.log(result.body);
+        expect(result.body).toHaveProperty("productEdited");
+        expect(result.statusCode).toBe(200);
+        expect(result.body.success).toEqual(true);
+    });
+});
