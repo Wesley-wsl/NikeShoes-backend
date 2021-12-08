@@ -94,4 +94,40 @@ describe("listProducts", () => {
         expect(result.statusCode).toBe(200);
         expect(result.body.success).toEqual(true);
     });
+
+    test("should list product by id", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Admin",
+            last_name: "Admin'",
+            email: "adm@gmail.com",
+            password: "1234",
+            admin: true,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "adm@gmail.com",
+            password: "1234",
+        });
+
+        const product = await sut
+            .post("/products")
+            .set("Authorization", `Bearer ${token.body}`)
+            .send({
+                name: "TênisNike",
+                description: "TênisNike",
+                product_image: "randomimage",
+                category: "Man",
+                price: 100,
+            });
+
+        const result = await sut.get(
+            `/products/${product.body.newProductCreated._id}`,
+        );
+
+        expect(result.body).toHaveProperty("product");
+        expect(result.statusCode).toBe(200);
+        expect(result.body.success).toEqual(true);
+    });
 });
