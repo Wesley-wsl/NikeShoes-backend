@@ -17,6 +17,17 @@ export default {
                 admin = false,
             } = request.body;
 
+            const requiredFields = [
+                "first_name",
+                "last_name",
+                "email",
+                "password",
+            ];
+            for (const field of requiredFields) {
+                if (!request.body[field])
+                    throw new Error(`${field} is required`);
+            }
+
             const newUserCreated = await UserServices.createNewUser({
                 first_name,
                 last_name,
