@@ -193,9 +193,45 @@ describe("Login", () => {
 });
 
 // describe("deleteUserById", () => {
-//     test("", () => {});
+//     jest.setTimeout(20000);
+
+//     beforeAll(() => connect());
+
+//     afterAll(() => disconnect());
+
+//     afterEach(() => UserModel.deleteMany({}));
+//     test("should delete user by id", () => {});
 // });
 
-// describe("listUsers", () => {
-//     test("", () => {});
-// });
+describe("listUsers", () => {
+    jest.setTimeout(20000);
+
+    beforeAll(() => connect());
+
+    afterAll(() => disconnect());
+
+    afterEach(() => UserModel.deleteMany({}));
+    test("should list all users", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: true,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+        });
+
+        const result = await sut
+            .get("/users")
+            .set("Authorization", `Bearer ${token.body}`);
+        expect(result.body).toHaveProperty("users");
+        expect(result.statusCode).toBe(200);
+        expect(result.body.success).toEqual(true);
+    });
+});
