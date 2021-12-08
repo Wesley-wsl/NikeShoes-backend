@@ -1,8 +1,18 @@
 import request from "supertest";
 
+import UserModel from "../api/models/UserModel";
 import app from "../server";
+import { connect, disconnect } from "./helpers/database";
 
 describe("createNewUser", () => {
+    jest.setTimeout(20000);
+
+    beforeAll(() => connect());
+
+    afterAll(() => disconnect());
+
+    afterEach(() => UserModel.deleteMany({}));
+
     test("return 400 if first_name is not provided", async () => {
         const sut = request(app);
         const result = await sut.post("/users").send({
@@ -66,6 +76,15 @@ describe("createNewUser", () => {
 
     test("Cannot create a user with an existing email ", async () => {
         const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
         const result = await sut.post("/users").send({
             first_name: "Rodrigo",
             last_name: "Victor'",
