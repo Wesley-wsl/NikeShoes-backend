@@ -1,12 +1,13 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-dotenv.config({
-    path: process.env.NODE_ENV === "test" ? ".env.test" : " .env",
-});
+dotenv.config();
 
 const dbConfig = `${process.env.MONGODB_URI}`;
+const dbTest = `${process.env.DB_TEST}`;
 
-const connection = mongoose.connect(dbConfig);
+const connection = mongoose.connect(
+    process.env.NODE_ENV == "test" ? dbTest : dbConfig,
+);
 
 export default connection;
