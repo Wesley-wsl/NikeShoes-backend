@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export default async function isValidId(
+export async function isValidId(
     req: Request,
     res: Response,
     next: NextFunction,
