@@ -75,3 +75,23 @@ describe("createNewProduct", () => {
         expect(result.body.success).toEqual(true);
     });
 });
+
+describe("listProducts", () => {
+    jest.setTimeout(20000);
+
+    beforeAll(() => connect());
+
+    afterAll(() => disconnect());
+
+    afterEach(() => ProductModel.deleteMany({}));
+
+    test("should list all products", async () => {
+        const sut = request(app);
+
+        const result = await sut.get("/products");
+
+        expect(result.body).toHaveProperty("listProducts");
+        expect(result.statusCode).toBe(200);
+        expect(result.body.success).toEqual(true);
+    });
+});
