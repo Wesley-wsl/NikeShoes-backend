@@ -96,3 +96,63 @@ describe("createNewUser", () => {
         expect(result.statusCode).toBe(400);
     });
 });
+
+describe("Login", () => {
+    jest.setTimeout(20000);
+
+    beforeAll(() => connect());
+
+    afterAll(() => disconnect());
+
+    afterEach(() => UserModel.deleteMany({}));
+
+    test("should return error if email is incorrect", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const result = await sut.post("/users/login").send({
+            email: "test@gmail.com",
+            password: "1234",
+        });
+
+        expect(result.body).toHaveProperty("error");
+        expect(result.body.error).toEqual("Email/Password incorrect");
+        expect(result.statusCode).toBe(400);
+    });
+
+    test("should return error if password is incorrect", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const result = await sut.post("/users/login").send({
+            email: "rodrigo@gmail.com",
+            password: "test",
+        });
+
+        expect(result.body).toHaveProperty("error");
+        expect(result.body.error).toEqual("Email/Password incorrect");
+        expect(result.statusCode).toBe(400);
+    });
+});
+
+// describe("deleteUserById", () => {
+//     test("", () => {});
+// });
+
+// describe("listUsers", () => {
+//     test("", () => {});
+// });
