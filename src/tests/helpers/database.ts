@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+
+import { server } from "../../server";
 dotenv.config();
 
 export const connect = async (): Promise<void> => {
@@ -18,4 +20,5 @@ export const connect = async (): Promise<void> => {
 
 export const disconnect = async (): Promise<void> => {
     await mongoose.connection.close();
+    server.close();
 };

@@ -1,7 +1,7 @@
 import request from "supertest";
 
 import UserModel from "../api/models/UserModel";
-import app from "../server";
+import { app } from "../server";
 import { connect, disconnect } from "./helpers/database";
 
 describe("createNewUser", () => {

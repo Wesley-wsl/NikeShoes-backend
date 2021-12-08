@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 
 import { CartRoutes, ProductRoutes, Stripe, UserRoutes } from "./api/routes";
 
@@ -17,7 +17,7 @@ app.use("/products", ProductRoutes);
 app.use("/cart", CartRoutes);
 app.use("/payment", Stripe);
 
-app.use((err: Error, req: Request, res: Response) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof Error) {
         return res.status(400).json({
             success: false,
@@ -30,6 +30,8 @@ app.use((err: Error, req: Request, res: Response) => {
         .json({ status: "error", message: "Internal Server Error" });
 });
 
-app.listen(3333, () => console.log("Server is running in port 3333."));
+const server = app.listen(3333, () =>
+    console.log("Server is running in port 3333."),
+);
 
-export default app;
+export { app, server };
