@@ -171,6 +171,25 @@ describe("Login", () => {
         expect(result.body.error).toEqual("Email/Password incorrect");
         expect(result.statusCode).toBe(400);
     });
+
+    test("should authenticate user", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const result = await sut.post("/users/login").send({
+            email: "rodrigovictor@gmail.com",
+            password: "1234",
+        });
+
+        expect(result.statusCode).toBe(200);
+    });
 });
 
 // describe("deleteUserById", () => {
