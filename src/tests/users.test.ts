@@ -253,9 +253,9 @@ describe("deleteUserById", () => {
         const sut = request(app);
 
         await sut.post("/users").send({
-            first_name: "Admin",
-            last_name: "Admin'",
-            email: "admin@gmail.com",
+            first_name: "Not",
+            last_name: "Admin",
+            email: "notadmin@gmail.com",
             password: "1234",
             admin: false,
         });
@@ -269,15 +269,38 @@ describe("deleteUserById", () => {
         });
 
         const token = await sut.post("/users/login").send({
-            email: "admin@gmail.com",
+            email: "notadmin@gmail.com",
             password: "1234",
         });
 
         const result = await sut
-            .delete(`/users/${personForDelete.body._id}`)
+            .delete(`/users/${personForDelete.body.newUserCreated._id}`)
             .set("Authorization", `Bearer ${token.body}`);
 
         expect(result.statusCode).toBe(401);
+    });
+
+    test("should user delete your account", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "User",
+            last_name: "User",
+            email: "user@gmail.com",
+            password: "1234",
+            admin: false,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "user@gmail.com",
+            password: "1234",
+        });
+
+        const result = await sut
+            .delete(`/users/${token.body}`)
+            .set("Authorization", `Bearer ${token.body}`);
+
+        expect(result.statusCode).toBe(200);
     });
 
     test("should delete user by id", async () => {
