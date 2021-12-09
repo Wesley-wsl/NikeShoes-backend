@@ -50,4 +50,44 @@ describe("Cart", () => {
         expect(result.body).toHaveProperty("productAdded");
         expect(result.body.success).toEqual(true);
     });
+
+    test("should remove product from your cart", async () => {
+        const sut = request(app);
+
+        await sut.post("/users").send({
+            first_name: "Teste",
+            last_name: "Teste",
+            email: "admin@gmail.com",
+            password: "1234",
+            admin: true,
+        });
+
+        const token = await sut.post("/users/login").send({
+            email: "admin@gmail.com",
+            password: "1234",
+        });
+
+        const product = await sut
+            .post("/products")
+            .set("Authorization", `Bearer ${token.body}`)
+            .send({
+                name: "TênisNike",
+                description: "TênisNike",
+                product_image: "randomimage",
+                category: "Man",
+                price: 100,
+            });
+
+        await sut
+            .post(`/cart/${product.body.newProductCreated._id}`)
+            .set("Authorization", `Bearer ${token.body}`);
+
+        const result = await sut
+            .delete(`/cart/${product.body.newProductCreated._id}`)
+            .set("Authorization", `Bearer ${token.body}`);
+
+        expect(result.statusCode).toBe(200);
+        expect(result.body).toHaveProperty("productRemoved");
+        expect(result.body.success).toEqual(true);
+    });
 });
