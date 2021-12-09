@@ -1,6 +1,7 @@
 import request from "supertest";
 
 import ProductModel from "../api/models/ProductModel";
+import UserModel from "../api/models/UserModel";
 import { app } from "../server";
 import { connect, disconnect } from "./helpers/database";
 
@@ -12,6 +13,7 @@ describe("createNewProduct", () => {
     afterAll(() => disconnect());
 
     afterEach(() => ProductModel.deleteMany({}));
+    afterEach(() => UserModel.deleteMany({}));
 
     test("should be admin to create new product", async () => {
         const sut = request(app);
@@ -225,7 +227,6 @@ describe("Update product", () => {
                 price: 100,
             });
 
-        console.log(result.body);
         expect(result.body).toHaveProperty("productEdited");
         expect(result.statusCode).toBe(200);
         expect(result.body.success).toEqual(true);
