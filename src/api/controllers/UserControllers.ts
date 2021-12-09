@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { validationResult } from "express-validator";
 
 import UserServices from "../services/UserServices";
 
@@ -27,6 +28,9 @@ export default {
                 if (!request.body[field])
                     throw new Error(`${field} is required`);
             }
+
+            const errors = validationResult(request);
+            if (!errors.isEmpty()) throw new Error(errors.array()[0].msg);
 
             const newUserCreated = await UserServices.createNewUser({
                 first_name,
