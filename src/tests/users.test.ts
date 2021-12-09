@@ -61,6 +61,38 @@ describe("createNewUser", () => {
         expect(result.statusCode).toBe(400);
     });
 
+    test("should not able create a new user with a email invalid", async () => {
+        const sut = request(app);
+        const result = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "kkkkkkkkkkkkkkkkk",
+            password: "1234",
+            admin: false,
+        });
+        expect(result.body).toHaveProperty("error");
+        expect(result.body.error).toEqual("email invalid");
+        expect(result.body.success).toEqual(false);
+        expect(result.statusCode).toBe(400);
+    });
+
+    test("should password be least 4 characters", async () => {
+        const sut = request(app);
+        const result = await sut.post("/users").send({
+            first_name: "Rodrigo",
+            last_name: "Victor'",
+            email: "victorrodrigo@gmail.com",
+            password: "123",
+            admin: false,
+        });
+        expect(result.body).toHaveProperty("error");
+        expect(result.body.error).toEqual(
+            "password must be at least 4 characters ",
+        );
+        expect(result.body.success).toEqual(false);
+        expect(result.statusCode).toBe(400);
+    });
+
     test("should be able create a new user", async () => {
         const sut = request(app);
         const result = await sut.post("/users").send({
