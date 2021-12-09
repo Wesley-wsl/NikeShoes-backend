@@ -3,7 +3,7 @@ import { body } from "express-validator";
 
 import AuthenticateUserController from "../controllers/AuthenticateUserController";
 import UserControllers from "../controllers/UserControllers";
-import { ensureAdmin, ensureAuthenticated, isValidId } from "../middlewares";
+import { ensureAuthenticated, isValidId } from "../middlewares";
 
 const routes = express.Router();
 
@@ -21,7 +21,6 @@ routes.post("/login", AuthenticateUserController.handle);
 routes.delete(
     "/:id",
     ensureAuthenticated,
-    ensureAdmin,
     isValidId,
     UserControllers.deleteUserById,
 );

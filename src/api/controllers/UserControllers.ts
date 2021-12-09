@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import UserModel from "../models/UserModel";
 
 import UserServices from "../services/UserServices";
 
@@ -52,11 +53,21 @@ export default {
     async deleteUserById(request: Request, response: Response) {
         const { id } = request.params;
 
-        const userDeleted = await UserServices.deleteUserById({ id });
+        const { userId }: any = request?.res?.locals;
 
-        return response.status(200).json({
-            success: true,
-            userDeleted,
+        const { admin } = await UserModel.findById({ _id: userId });
+
+        if (admin || id === userId) {
+            const userDeleted = await UserServices.deleteUserById({ id });
+
+            return response.status(200).json({
+                success: true,
+                userDeleted,
+            });
+        }
+
+        return response.status(401).json({
+            error: "Unauthorized",
         });
     },
 
