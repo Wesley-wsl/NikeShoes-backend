@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import UserModel from "../models/UserModel";
+import jwt from "jsonwebtoken";
 
+import UserModel from "../models/UserModel";
 import UserServices from "../services/UserServices";
 
 export default {
@@ -78,5 +79,19 @@ export default {
             success: true,
             users,
         });
+    },
+
+    async jwtValid(request: Request, response: Response) {
+        try {
+            const { token } = request.params;
+            jwt.verify(`${token}`, `${process.env.SECRET}`);
+            return response.status(200).json({
+                success: true,
+            });
+        } catch (err) {
+            return response.status(400).json({
+                error: err,
+            });
+        }
     },
 };

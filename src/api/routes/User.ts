@@ -25,5 +25,6 @@ routes.delete(
     UserControllers.deleteUserById,
 );
 routes.get("/", ensureAuthenticated, UserControllers.listUsers);
+routes.get("/validjwt/:token", UserControllers.jwtValid);
 
 export { routes as UserRoutes };
