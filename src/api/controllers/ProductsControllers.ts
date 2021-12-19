@@ -10,8 +10,14 @@ export default {
         next: NextFunction,
     ) {
         try {
-            const { name, description, product_image, category, price } =
-                request.body;
+            const {
+                name,
+                description,
+                product_image,
+                category,
+                price,
+                video_url,
+            } = request.body;
 
             const newProductCreated = await ProductsServices.createNewProduct({
                 name,
@@ -19,6 +25,7 @@ export default {
                 product_image,
                 category,
                 price,
+                video_url,
             });
 
             return response.status(201).json({
@@ -65,8 +72,14 @@ export default {
         next: NextFunction,
     ) {
         try {
-            const { name, description, product_image, category, price } =
-                request.body;
+            const {
+                name,
+                description,
+                product_image,
+                category,
+                price,
+                video_url,
+            } = request.body;
             const { id } = request.params;
 
             const productEdited = await ProductsServices.editProductById({
@@ -76,6 +89,7 @@ export default {
                 product_image,
                 category,
                 price,
+                video_url,
             });
 
             return response.status(200).json({

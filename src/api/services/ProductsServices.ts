@@ -8,6 +8,7 @@ export default {
         product_image,
         category,
         price,
+        video_url,
     }: IProducts) {
         const ProductExists = await ProductModel.findOne({
             name,
@@ -23,6 +24,7 @@ export default {
             product_image,
             category,
             price,
+            video_url,
         });
 
         return newProductCreated;
@@ -56,6 +58,7 @@ export default {
         product_image,
         category,
         price,
+        video_url,
     }: IProducts) {
         const product = await ProductModel.findByIdAndUpdate(
             { _id: id },
@@ -65,6 +68,7 @@ export default {
                 product_image,
                 category,
                 price,
+                video_url,
             },
         );
 
