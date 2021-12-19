@@ -38,4 +38,10 @@ export default {
         const users = await UserModel.find({}).populate({ path: "cart" });
         return users;
     },
+
+    async findUserById({ id }: IId) {
+        const user = await UserModel.find({ _id: id });
+
+        return user;
+    },
 };

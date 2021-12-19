@@ -84,14 +84,27 @@ export default {
     async jwtValid(request: Request, response: Response) {
         try {
             const { token } = request.params;
-            jwt.verify(`${token}`, `${process.env.SECRET}`);
+            const decoded = jwt.verify(`${token}`, `${process.env.SECRET}`);
+
             return response.status(200).json({
                 success: true,
+                id: decoded.sub,
             });
         } catch (err) {
             return response.status(400).json({
                 error: err,
             });
         }
+    },
+
+    async findUserById(request: Request, response: Response) {
+        const { id } = request.params;
+
+        const user = await UserServices.findUserById({ id });
+
+        return response.status(200).json({
+            success: true,
+            user,
+        });
     },
 };
