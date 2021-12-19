@@ -19,6 +19,7 @@ export interface IProducts {
     product_image: string;
     category: string;
     price: number;
+    video_url: string;
 }
 
 export interface IId {
