@@ -9,6 +9,11 @@ export default {
         if (!findProduct) throw new Error("Product don't exists");
 
         const findUser = await UserModel.findById({ _id: userId });
+        const productInCart = findUser.cart.some(
+            (product: { _id: string }) => product._id == id,
+        );
+
+        if (productInCart) throw new Error("Product already add in your cart");
 
         findUser.cart.push(id);
         findUser.save();
