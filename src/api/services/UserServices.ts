@@ -40,7 +40,9 @@ export default {
     },
 
     async findUserById({ id }: IId) {
-        const user = await UserModel.find({ _id: id });
+        const user = await UserModel.find({ _id: id }).populate({
+            path: "cart",
+        });
 
         return user;
     },
