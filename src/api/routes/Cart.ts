@@ -12,6 +12,15 @@ routes.post(
     CartControllers.addProductInCart,
 );
 
+routes.get("/", ensureAuthenticated, CartControllers.listUserCart);
+
+routes.put(
+    "/:id",
+    isValidId,
+    ensureAuthenticated,
+    CartControllers.editQuantity,
+);
+
 routes.delete(
     "/:id",
     isValidId,
