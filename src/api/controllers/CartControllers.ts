@@ -26,6 +26,25 @@ export default {
         }
     },
 
+    async listUserCart(
+        request: Request,
+        response: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const { userId }: any = request?.res?.locals;
+
+            const cartUser = await CartServices.listUserCart({ userId });
+
+            return response.status(200).json({
+                success: true,
+                cartUser,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+
     async removeProductFromCart(
         request: Request,
         response: Response,
@@ -43,6 +62,31 @@ export default {
             return response.status(200).json({
                 success: true,
                 productRemoved,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    async editQuantity(
+        request: Request,
+        response: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const { id } = request.params;
+            const { quantity } = request.body;
+            const { userId }: any = request?.res?.locals;
+
+            const productEdit = await CartServices.editQuantity({
+                id,
+                userId,
+                quantity,
+            });
+
+            return response.status(200).json({
+                success: true,
+                productEdit,
             });
         } catch (err) {
             next(err);
