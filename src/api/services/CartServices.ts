@@ -1,6 +1,6 @@
-import { IId } from "../@types";
+import { IEditProduct, IId, IUserId } from "../@types";
+import CartModel from "../models/CartModel";
 import ProductModel from "../models/ProductModel";
-import UserModel from "../models/UserModel";
 
 export default {
     async addProductInCart({ userId, id }: IId) {
@@ -8,17 +8,25 @@ export default {
 
         if (!findProduct) throw new Error("Product don't exists");
 
-        const findUser = await UserModel.findById({ _id: userId });
-        const productInCart = findUser.cart.some(
-            (product: { _id: string }) => product._id == id,
-        );
+        const productInCart = await CartModel.findOne({
+            productId: id,
+            userId: userId,
+        });
 
         if (productInCart) throw new Error("Product already add in your cart");
 
-        findUser.cart.push(id);
-        findUser.save();
+        const productAddInCart = await CartModel.create({
+            userId: userId,
+            productId: id,
+        });
 
-        return findProduct;
+        return productAddInCart;
+    },
+
+    async listUserCart({ userId }: IUserId) {
+        const userCart = await CartModel.find({ userId: userId });
+
+        return userCart;
     },
 
     async removeProductFromCart({ userId, id }: IId) {
@@ -26,13 +34,45 @@ export default {
 
         if (!findProduct) throw new Error("Product don't exists");
 
-        const findUser = await UserModel.findById({ _id: userId });
-
-        findUser.cart.forEach((element: string, index: number) => {
-            if (element == id) return findUser.cart.splice(index, 1);
+        const productInCart = await CartModel.findOne({
+            productId: id,
+            userId: userId,
         });
-        findUser.save();
 
-        return findProduct;
+        if (!productInCart)
+            throw new Error("Product don't exists in your cart");
+
+        const productDeleted = await CartModel.deleteOne({
+            productId: id,
+            userId: userId,
+        });
+
+        return productDeleted;
+    },
+
+    async editQuantity({ id, userId, quantity }: IEditProduct) {
+        const findProduct = await ProductModel.findById({ _id: id });
+
+        if (!findProduct) throw new Error("Product don't exists");
+
+        const productInCart = await CartModel.findOne({
+            productId: id,
+            userId: userId,
+        });
+
+        if (!productInCart)
+            throw new Error("Product don't exists in your cart");
+
+        const quantityUpdated = await CartModel.findOneAndUpdate(
+            {
+                productId: id,
+                userId: userId,
+            },
+            {
+                quantity,
+            },
+        );
+
+        return quantityUpdated;
     },
 };
