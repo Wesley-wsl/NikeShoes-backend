@@ -35,14 +35,12 @@ export default {
     },
 
     async listUsers() {
-        const users = await UserModel.find({}).populate({ path: "cart" });
+        const users = await UserModel.find({});
         return users;
     },
 
     async findUserById({ id }: IId) {
-        const user = await UserModel.find({ _id: id }).populate({
-            path: "cart",
-        });
+        const user = await UserModel.find({ _id: id });
 
         return user;
     },
