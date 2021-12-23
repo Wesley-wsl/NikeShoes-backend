@@ -24,7 +24,9 @@ export default {
     },
 
     async listUserCart({ userId }: IUserId) {
-        const userCart = await CartModel.find({ userId: userId });
+        const userCart = await CartModel.find({ userId: userId }).populate({
+            path: "productId",
+        });
 
         return userCart;
     },
