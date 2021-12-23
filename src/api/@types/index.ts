@@ -22,6 +22,10 @@ export interface IProducts {
     video_url: string;
 }
 
+export interface IProductsStripe extends IProducts {
+    quantity: number;
+}
+
 export interface IId {
     id: string;
     userId?: string;
@@ -29,4 +33,26 @@ export interface IId {
 
 export interface ICategory {
     category?: string;
+}
+
+export interface IEditProduct {
+    id: string;
+    userId?: string;
+    quantity: number;
+}
+
+export interface IUserId {
+    userId: string;
+}
+
+export interface IPriceDate {
+    price_data: {
+        currency: string;
+        product_data: {
+            name: string;
+            images: string[];
+        };
+        unit_amount: number;
+    };
+    quantity: number;
 }
