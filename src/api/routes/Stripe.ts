@@ -44,6 +44,13 @@ routes.post("/", ensureAuthenticated, async (req: Request, res: Response) => {
         });
     });
 
+    if (items.length === 0) {
+        return res.status(400).json({
+            success: false,
+            error: "Don't exists products",
+        });
+    }
+
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [...items],
