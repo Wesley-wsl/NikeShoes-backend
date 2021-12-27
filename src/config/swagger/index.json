@@ -27,6 +27,10 @@
         {
             "name": "Cart",
             "description": "Operations about cart"
+        },
+        {
+            "name": "Checkout",
+            "description": "Operations about checkout"
         }
     ],
     "paths": {
@@ -997,6 +1001,51 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/payment": {
+            "post": {
+                "tags": ["Checkout"],
+                "summary": "Checkout",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "url": "https://checkout.stripe.com/pay/cs_test_a1TOqf0XUI1u9MeFLb2oQsEMbhO5jsoszOLnAvHL1VodI11ezaZBN4j0hb#fidkdWxOYHwnPyd1blpxYHZxWjA0TjU8MlVPUVVpTmJGbU1GSmlDM1dvPDJETz1nd01QTkpHcWFUZ2RgZjBBQmJqT08wQ1A2SnNNTHxBNHJ2YVZKRzVQXENPNU9qZ05"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
