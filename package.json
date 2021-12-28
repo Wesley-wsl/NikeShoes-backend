@@ -1,7 +1,7 @@
 {
     "name": "nike-shoes-backend",
     "version": "1.0.0",
-    "main": "server,ts",
+    "main": "dist/src/server.js",
     "license": "MIT",
     "scripts": {
         "start": "tsc && node dist/src/server.js",
