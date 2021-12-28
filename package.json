@@ -4,7 +4,8 @@
     "main": "dist/src/server.js",
     "license": "MIT",
     "scripts": {
-        "start": "tsc && node dist/src/server.js",
+        "build": "tsc",
+        "start": "node dist/src/server.js",
         "dev": "cross-env NODE_ENV=dev && ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
         "test": "cross-env NODE_ENV=test && jest --runInBand --forceExit"
     },
