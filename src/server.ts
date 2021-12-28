@@ -9,6 +9,7 @@ import "express-async-errors";
 import "./config/dbConfig";
 
 const app = express();
+const PORT = process.env.PORT || 3333;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,8 +34,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         .json({ status: "error", message: "Internal Server Error" });
 });
 
-const server = app.listen(process.env.PORT || 3333, () =>
-    console.log("Server is running in port 3333."),
+const server = app.listen(PORT, () =>
+    console.log(`Server is running in port ${PORT}.`),
 );
 
 export { app, server };
