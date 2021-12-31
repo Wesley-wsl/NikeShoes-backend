@@ -55,8 +55,16 @@ routes.post("/", ensureAuthenticated, async (req: Request, res: Response) => {
         payment_method_types: ["card"],
         line_items: [...items],
         mode: "payment",
-        success_url: `http://localhost:3000/`,
-        cancel_url: `http://localhost:3000/cart`,
+        success_url: `${
+            process.env.STRIPE_REDIRECT
+                ? process.env.STRIPE_REDIRECT
+                : "http://localhost:3000/"
+        }`,
+        cancel_url: `${
+            process.env.STRIPE_REDIRECT
+                ? process.env.STRIPE_REDIRECT
+                : "http://localhost:3000/"
+        }`,
     });
 
     res.json({ url: session.url });
