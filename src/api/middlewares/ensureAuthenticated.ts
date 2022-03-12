@@ -14,11 +14,7 @@ export function ensureAuthenticated(
 
     const [, token] = authToken.split(" ");
 
-    try {
-        const decoded = verify(token, `${process.env.SECRET}`);
-        response.locals.userId = decoded.sub;
-        return next();
-    } catch (err) {
-        return response.status(401).end();
-    }
+    const decoded = verify(token, `${process.env.SECRET}`);
+    response.locals.userId = decoded.sub;
+    return next();
 }
