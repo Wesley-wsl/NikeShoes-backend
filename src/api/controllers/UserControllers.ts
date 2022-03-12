@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 
@@ -6,55 +6,41 @@ import UserModel from "../models/UserModel";
 import UserServices from "../services/UserServices";
 
 export default {
-    async createNewUser(
-        request: Request,
-        response: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const {
-                first_name,
-                last_name,
-                email,
-                password,
-                admin = false,
-            } = request.body;
+    async createNewUser(request: Request, response: Response) {
+        const {
+            first_name,
+            last_name,
+            email,
+            password,
+            admin = false,
+        } = request.body;
 
-            const requiredFields = [
-                "first_name",
-                "last_name",
-                "email",
-                "password",
-            ];
-            for (const field of requiredFields) {
-                if (!request.body[field])
-                    throw new Error(`${field} is required`);
-            }
-
-            const errors = validationResult(request);
-            if (!errors.isEmpty()) throw new Error(errors.array()[0].msg);
-
-            const newUserCreated = await UserServices.createNewUser({
-                first_name,
-                last_name,
-                email,
-                password,
-                admin,
-            });
-
-            return response.status(201).json({
-                success: true,
-                newUserCreated: newUserCreated,
-            });
-        } catch (err) {
-            next(err);
+        const requiredFields = ["first_name", "last_name", "email", "password"];
+        for (const field of requiredFields) {
+            if (!request.body[field]) throw new Error(`${field} is required`);
         }
+
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) throw new Error(errors.array()[0].msg);
+
+        const newUserCreated = await UserServices.createNewUser({
+            first_name,
+            last_name,
+            email,
+            password,
+            admin,
+        });
+
+        return response.status(201).json({
+            success: true,
+            newUserCreated: newUserCreated,
+        });
     },
 
     async deleteUserById(request: Request, response: Response) {
         const { id } = request.params;
 
-        const { userId }: any = request?.res?.locals;
+        const userId = request?.res?.locals?.userId;
 
         const { admin } = await UserModel.findById({ _id: userId });
 
@@ -82,19 +68,13 @@ export default {
     },
 
     async jwtValid(request: Request, response: Response) {
-        try {
-            const { token } = request.params;
-            const decoded = jwt.verify(`${token}`, `${process.env.SECRET}`);
+        const { token } = request.params;
+        const decoded = jwt.verify(`${token}`, `${process.env.SECRET}`);
 
-            return response.status(200).json({
-                success: true,
-                id: decoded.sub,
-            });
-        } catch (err) {
-            return response.status(400).json({
-                error: err,
-            });
-        }
+        return response.status(200).json({
+            success: true,
+            id: decoded.sub,
+        });
     },
 
     async findUserById(request: Request, response: Response) {

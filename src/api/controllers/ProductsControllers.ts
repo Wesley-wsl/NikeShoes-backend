@@ -1,40 +1,26 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 import { ICategory } from "../@types";
 import ProductsServices from "../services/ProductsServices";
 
 export default {
-    async createNewProduct(
-        request: Request,
-        response: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const {
-                name,
-                description,
-                product_image,
-                category,
-                price,
-                video_url,
-            } = request.body;
+    async createNewProduct(request: Request, response: Response) {
+        const { name, description, product_image, category, price, video_url } =
+            request.body;
 
-            const newProductCreated = await ProductsServices.createNewProduct({
-                name,
-                description,
-                product_image,
-                category,
-                price,
-                video_url,
-            });
+        const newProductCreated = await ProductsServices.createNewProduct({
+            name,
+            description,
+            product_image,
+            category,
+            price,
+            video_url,
+        });
 
-            return response.status(201).json({
-                success: true,
-                newProductCreated,
-            });
-        } catch (err) {
-            next(err);
-        }
+        return response.status(201).json({
+            success: true,
+            newProductCreated,
+        });
     },
 
     async listProducts(request: Request, response: Response) {
@@ -47,78 +33,48 @@ export default {
         });
     },
 
-    async findProductById(
-        request: Request,
-        response: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const { id } = request.params;
+    async findProductById(request: Request, response: Response) {
+        const { id } = request.params;
 
-            const product = await ProductsServices.findProductById({ id });
+        const product = await ProductsServices.findProductById({ id });
 
-            return response.status(200).json({
-                success: true,
-                product,
-            });
-        } catch (err) {
-            next(err);
-        }
+        return response.status(200).json({
+            success: true,
+            product,
+        });
     },
 
-    async editProductById(
-        request: Request,
-        response: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const {
-                name,
-                description,
-                product_image,
-                category,
-                price,
-                video_url,
-            } = request.body;
-            const { id } = request.params;
+    async editProductById(request: Request, response: Response) {
+        const { name, description, product_image, category, price, video_url } =
+            request.body;
+        const { id } = request.params;
 
-            const productEdited = await ProductsServices.editProductById({
-                id,
-                name,
-                description,
-                product_image,
-                category,
-                price,
-                video_url,
-            });
+        const productEdited = await ProductsServices.editProductById({
+            id,
+            name,
+            description,
+            product_image,
+            category,
+            price,
+            video_url,
+        });
 
-            return response.status(200).json({
-                success: true,
-                productEdited,
-            });
-        } catch (err) {
-            next(err);
-        }
+        return response.status(200).json({
+            success: true,
+            productEdited,
+        });
     },
 
-    async deleteProductById(
-        request: Request,
-        response: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const { id } = request.params;
+    async deleteProductById(request: Request, response: Response) {
+        const { id } = request.params;
 
-            const productDeleted = await ProductsServices.deleteProductById({
-                id,
-            });
+        const productDeleted = await ProductsServices.deleteProductById({
+            id,
+        });
 
-            return response.status(200).json({
-                success: true,
-                productDeleted,
-            });
-        } catch (err) {
-            next(err);
-        }
+        return response.status(200).json({
+            success: true,
+            productDeleted,
+        });
     },
 };
