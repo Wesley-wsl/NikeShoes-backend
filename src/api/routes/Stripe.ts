@@ -13,7 +13,7 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const routes = express.Router();
 
 routes.post("/", ensureAuthenticated, async (req: Request, res: Response) => {
-    const { userId }: any = req?.res?.locals;
+    const userId = req?.res?.locals?.userId;
 
     const products: IProductsStripe[] = [];
 

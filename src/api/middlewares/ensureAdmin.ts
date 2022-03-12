@@ -7,7 +7,7 @@ export async function ensureAdmin(
     response: Response,
     next: NextFunction,
 ) {
-    const { userId }: any = request?.res?.locals;
+    const userId = request?.res?.locals?.userId;
 
     const { admin } = await UserModel.findById({ _id: userId });
 
